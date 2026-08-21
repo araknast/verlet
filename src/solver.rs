@@ -72,8 +72,8 @@ impl Solver {
     pub fn get_objects(&mut self) -> &mut Vec<VerletObject> {
         &mut self.objects
     }
-    pub fn add_object(&mut self, size: f32, position: Option<Vector2f>) {
-        self.objects.push(VerletObject::new(size, position, None));
+    pub fn add_object(&mut self, size: f32, position: Option<Vector2f>, color: Option<Color>) {
+        self.objects.push(VerletObject::new(size, position, color));
     }
 
     pub fn update(&mut self) {

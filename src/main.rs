@@ -3,6 +3,7 @@ mod solver;
 
 use crate::renderer::Renderer;
 use crate::solver::Solver;
+use rand::{self, random};
 use sfml::SfResult;
 use sfml::graphics::{Color, RenderTarget, RenderWindow};
 use sfml::system::{Clock, Vector2f};
@@ -29,7 +30,7 @@ fn main() -> SfResult<()> {
     let constraint_center = Vector2f::new(WIN_W as f32 * 0.5, WIN_H as f32 * 0.5);
     let mut solver = Solver::new(8, 1000., constraint_center, 250.0, fps_limit);
 
-    solver.add_object(BALL_SIZE, None);
+    solver.add_object(BALL_SIZE, None, None);
 
     let mut renderer;
 
@@ -57,7 +58,11 @@ fn main() -> SfResult<()> {
 
         if mouse_is_pressed && clock.elapsed_time().as_seconds() > spawn_cooldown {
             clock.restart();
-            solver.add_object(BALL_SIZE, Some(mouse_pos));
+            solver.add_object(
+                BALL_SIZE,
+                Some(mouse_pos),
+                Some(Color::from(random::<u32>())),
+            );
         }
 
         solver.update();
