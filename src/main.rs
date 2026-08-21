@@ -5,7 +5,7 @@ use crate::renderer::Renderer;
 use crate::solver::{Solver, VerletObject};
 use sfml::SfResult;
 use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow};
-use sfml::system::Vector2f;
+use sfml::system::{Clock, Vector2f};
 use sfml::window::{ContextSettings, Style};
 
 fn main() -> SfResult<()> {
@@ -33,7 +33,13 @@ fn main() -> SfResult<()> {
 
     let mut renderer;
 
+    let mut clock = Clock::start()?;
+    let object_spawn_delay = 1.;
     loop {
+        if clock.elapsed_time().as_seconds() >= object_spawn_delay {
+            clock.restart();
+            solver.add_object(BALL_SIZE);
+        }
         solver.update();
         window.clear(Color::WHITE);
         renderer = Renderer::new(&mut window);
