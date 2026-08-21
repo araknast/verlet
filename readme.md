@@ -2,7 +2,7 @@
 
 a verlet physics simulation
 
-click to add a ball
+click to add balls
 
 ![](v.png)
 

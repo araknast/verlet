@@ -5,7 +5,7 @@ use crate::renderer::Renderer;
 use crate::solver::Solver;
 use sfml::SfResult;
 use sfml::graphics::{Color, RenderTarget, RenderWindow};
-use sfml::system::Vector2f;
+use sfml::system::{Clock, Vector2f};
 use sfml::window::{ContextSettings, Event, Style};
 
 fn main() -> SfResult<()> {
@@ -33,14 +33,31 @@ fn main() -> SfResult<()> {
 
     let mut renderer;
 
+    let mut clock = Clock::start()?;
+    let spawn_cooldown = 0.;
+    let mut mouse_is_pressed = false;
+    let mut mouse_pos = Vector2f::default();
+
     loop {
         if let Some(event) = window.poll_event() {
             match event {
-                Event::MouseButtonPressed { x, y, .. } => {
-                    solver.add_object(BALL_SIZE, Some(Vector2f::new(x as f32, y as f32)));
+                Event::MouseButtonPressed { .. } => {
+                    mouse_is_pressed = true;
+                }
+                Event::MouseButtonReleased { .. } => {
+                    mouse_is_pressed = false;
+                }
+                Event::MouseMoved { x, y } => {
+                    mouse_pos.x = x as f32;
+                    mouse_pos.y = y as f32;
                 }
                 _ => (),
             }
+        }
+
+        if mouse_is_pressed && clock.elapsed_time().as_seconds() > spawn_cooldown {
+            clock.restart();
+            solver.add_object(BALL_SIZE, Some(mouse_pos));
         }
 
         solver.update();
