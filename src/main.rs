@@ -7,6 +7,7 @@ use rand::{self, random};
 use sfml::SfResult;
 use sfml::graphics::{Color, RenderTarget, RenderWindow};
 use sfml::system::{Clock, Vector2f};
+use sfml::window::mouse::Button;
 use sfml::window::{ContextSettings, Event, Style};
 
 fn main() -> SfResult<()> {
@@ -40,20 +41,24 @@ fn main() -> SfResult<()> {
     let mut mouse_pos = Vector2f::default();
 
     loop {
-        if let Some(event) = window.poll_event() {
-            match event {
-                Event::MouseButtonPressed { .. } => {
-                    mouse_is_pressed = true;
-                }
-                Event::MouseButtonReleased { .. } => {
-                    mouse_is_pressed = false;
-                }
-                Event::MouseMoved { x, y } => {
-                    mouse_pos.x = x as f32;
-                    mouse_pos.y = y as f32;
-                }
-                _ => (),
+        match window.poll_event() {
+            Some(Event::MouseButtonPressed {
+                button: Button::Left,
+                ..
+            }) => {
+                mouse_is_pressed = true;
             }
+            Some(Event::MouseButtonReleased {
+                button: Button::Left,
+                ..
+            }) => {
+                mouse_is_pressed = false;
+            }
+            Some(Event::MouseMoved { x, y }) => {
+                mouse_pos.x = x as f32;
+                mouse_pos.y = y as f32;
+            }
+            _ => (),
         }
 
         if mouse_is_pressed && clock.elapsed_time().as_seconds() > spawn_cooldown {
