@@ -31,18 +31,6 @@ impl VerletObject {
     fn accelerate(&mut self, a: Vector2f) {
         self.accel += a;
     }
-
-    fn set_velocity(&mut self, v: Vector2f, dt: f32) {
-        self.position_last = self.position - (v * dt);
-    }
-
-    fn add_velocity(&mut self, v: Vector2f, dt: f32) {
-        self.position_last -= v * dt;
-    }
-
-    fn get_velocity(&mut self, dt: f32) -> Vector2f {
-        (self.position - self.position_last) / dt
-    }
 }
 
 #[derive(Default)]
