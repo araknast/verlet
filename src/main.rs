@@ -2,9 +2,9 @@ mod renderer;
 mod solver;
 
 use crate::renderer::Renderer;
-use crate::solver::{Solver, VerletObject};
+use crate::solver::Solver;
 use sfml::SfResult;
-use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow};
+use sfml::graphics::{Color, RenderTarget, RenderWindow};
 use sfml::system::{Clock, Vector2f};
 use sfml::window::{ContextSettings, Style};
 
