@@ -5,14 +5,14 @@ use crate::renderer::Renderer;
 use crate::solver::Solver;
 use sfml::SfResult;
 use sfml::graphics::{Color, RenderTarget, RenderWindow};
-use sfml::system::{Clock, Vector2f};
-use sfml::window::{ContextSettings, Style};
+use sfml::system::Vector2f;
+use sfml::window::{ContextSettings, Event, Style};
 
 fn main() -> SfResult<()> {
     const WIN_W: u32 = 800;
     const WIN_H: u32 = 600;
     const WIN_TITLE: &str = "New Window";
-    const BALL_SIZE: f32 = 25.;
+    const BALL_SIZE: f32 = 10.;
 
     let fps_limit = 60;
     let aa_level = 5;
@@ -29,17 +29,20 @@ fn main() -> SfResult<()> {
     let constraint_center = Vector2f::new(WIN_W as f32 * 0.5, WIN_H as f32 * 0.5);
     let mut solver = Solver::new(8, 1000., constraint_center, 250.0, fps_limit);
 
-    solver.add_object(BALL_SIZE);
+    solver.add_object(BALL_SIZE, None);
 
     let mut renderer;
 
-    let mut clock = Clock::start()?;
-    let object_spawn_delay = 1.;
     loop {
-        if clock.elapsed_time().as_seconds() >= object_spawn_delay {
-            clock.restart();
-            solver.add_object(BALL_SIZE);
+        if let Some(event) = window.poll_event() {
+            match event {
+                Event::MouseButtonPressed { x, y, .. } => {
+                    solver.add_object(BALL_SIZE, Some(Vector2f::new(x as f32, y as f32)));
+                }
+                _ => (),
+            }
         }
+
         solver.update();
         window.clear(Color::WHITE);
         renderer = Renderer::new(&mut *window);
