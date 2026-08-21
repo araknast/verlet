@@ -69,6 +69,9 @@ impl Solver {
             self.constraint_radius,
         )
     }
+    pub fn clear_objects(&mut self) {
+        self.objects.clear();
+    }
     pub fn get_objects(&mut self) -> &mut Vec<VerletObject> {
         &mut self.objects
     }

@@ -54,6 +54,12 @@ fn main() -> SfResult<()> {
             }) => {
                 mouse_is_pressed = false;
             }
+            Some(Event::MouseButtonPressed {
+                button: Button::Right,
+                ..
+            }) => {
+                solver.clear_objects();
+            }
             Some(Event::MouseMoved { x, y }) => {
                 mouse_pos.x = x as f32;
                 mouse_pos.y = y as f32;
