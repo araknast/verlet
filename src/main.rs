@@ -42,7 +42,7 @@ fn main() -> SfResult<()> {
         }
         solver.update();
         window.clear(Color::WHITE);
-        renderer = Renderer::new(&mut window);
+        renderer = Renderer::new(&mut *window);
         renderer.render(&mut solver);
         window.display();
     }

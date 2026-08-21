@@ -1,17 +1,13 @@
 use crate::solver::{Solver, VerletObject};
-use sfml::cpp::FBox;
-use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
+use sfml::graphics::{CircleShape, Color, RenderTarget, Shape, Transformable};
 use sfml::system::{Vector2f, Vector3f};
 
-//TODO: Make target a generic RenderTarget Instead of a window
-//TODO: Remove the need for FBox?
-
-pub struct Renderer<'a> {
-    target: &'a mut FBox<RenderWindow>,
+pub struct Renderer<'a, T: RenderTarget> {
+    target: &'a mut T,
 }
 
-impl<'a> Renderer<'a> {
-    pub fn new(target: &'a mut FBox<RenderWindow>) -> Self {
+impl<'a, T: RenderTarget> Renderer<'a, T> {
+    pub fn new(target: &'a mut T) -> Self {
         Renderer { target }
     }
     pub fn render(&mut self, solver: &mut Solver) {
